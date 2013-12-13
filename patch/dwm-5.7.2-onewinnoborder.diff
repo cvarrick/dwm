@@ -1,0 +1,72 @@
+diff -up dwm-5.7.2/dwm.c dwm-5.7.2-modified/dwm.c
+--- dwm-5.7.2/dwm.c	2009-09-27 20:20:23.000000000 +0100
++++ dwm-5.7.2-modified/dwm.c	2010-03-26 19:58:14.000000000 +0000
+@@ -394,10 +394,33 @@ arrange(Monitor *m) {
+ 
+ void
+ arrangemon(Monitor *m) {
++	Client *c;
++	XWindowChanges wc;
++	unsigned int n;
++
+ 	strncpy(m->ltsymbol, m->lt[m->sellt]->symbol, sizeof m->ltsymbol);
+ 	if(m->lt[m->sellt]->arrange)
+ 		m->lt[m->sellt]->arrange(m);
+ 	restack(m);
++
++	/* rest of function is to hide a window's border when it's the only one on screen */
++	n = 0;
++	for(c = m->clients; c; c = c->next)
++		if(ISVISIBLE(c))
++			n++;
++	if (n != 0 && m->sel) { /* we don't care if there are no windows, or nothing is selected */
++		c = m->sel;
++		if (!m->showbar && (m->lt[m->sellt]->arrange == monocle || n == 1)) {
++			wc.border_width = 0;
++			XConfigureWindow(dpy, c->win, CWBorderWidth, &wc);
++			XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w + 2 * c->bw, c->h + 2 * c->bw);
++		}
++		else {
++			wc.border_width = c->bw;
++			XConfigureWindow(dpy, c->win, CWBorderWidth, &wc);
++			XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
++		}
++	}
+ }
+ 
+ void
+@@ -812,6 +835,10 @@ expose(XEvent *e) {
+ 
+ void
+ focus(Client *c) {
++	Client *mc;
++	XWindowChanges wc;
++	unsigned int n;
++	
+ 	if(!c || !ISVISIBLE(c))
+ 		for(c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
+ 	if(selmon->sel)
+@@ -826,6 +853,23 @@ focus(Client *c) {
+ 		grabbuttons(c, True);
+ 		XSetWindowBorder(dpy, c->win, dc.sel[ColBorder]);
+ 		XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
++
++		/* this bit is to hide a window's border when it's the only one on the screen */
++		n = 0;
++		for(mc = selmon->clients; mc; mc = mc->next)
++			if(ISVISIBLE(mc))
++				n++;
++		if (!selmon->showbar && (selmon->lt[selmon->sellt]->arrange == monocle || n == 1)) {
++			wc.border_width = 0;
++			XConfigureWindow(dpy, c->win, CWBorderWidth, &wc);
++			XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w + 2 * c->bw, c->h + 2 * c->bw);
++		}
++		else {
++			wc.border_width = c->bw;
++			XConfigureWindow(dpy, c->win, CWBorderWidth, &wc);
++			XMoveResizeWindow(dpy, c->win, c->x, c->y, c->w, c->h);
++		}
++		
+ 	}
+ 	else
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
