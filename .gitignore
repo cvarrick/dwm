@@ -3,3 +3,7 @@
 *.swn
 *.swm
 *~
+*.rej
+*.orig
+*.o
+dwm
