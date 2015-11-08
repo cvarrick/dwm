@@ -1,4 +1,4 @@
-/* See LICENSE file for copyright and license details. */ /* appearance */ 
+/* See LICENSE file for copyright and license details. */ /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*";
 static const char normbordercolor[] = "#101010";
 static const char normbgcolor[]     = "#151515";
@@ -21,6 +21,8 @@ static const Rule rules[] = {
 	 { "feh",     NULL,       NULL,       0,            True,        -1 },
 	 { "Keepassx",     NULL, "KeePassX - Auto-Type",      0,            True,        -1 },
 	 { "Pavucontrol",     NULL, NULL,      1<<9,            False,        -1 },
+	 { "NULL",     NULL,  "joneill@t400 - newsbeuter",      1<<5,            False,        -1 },
+	 { "NULL",     NULL, "mutt",      1<<4,            False,        -1 },
 
 };
 
@@ -39,10 +41,10 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+{ MODKEY|Mod1Mask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+{ MODKEY|ControlMask,              KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -50,10 +52,12 @@ static const Layout layouts[] = {
 /* commands */
 static const char *dmenucmd[] = { "dmenu_run", "-fn", "-*-*-*-*-*-*-32-*-*-*-*-*-*-*", "-nb", "#AEB404", "-nf", "#000", "-sb", "#000", "-sf", "#FFF",  NULL };
 static const char *termcmd[]  = { "mrxvt", NULL };
+static const char *togglestatuscmd[]  = { "toggle_status.bash", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ ControlMask,                       XK_space,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_backslash,      spawn,          {.v = togglestatuscmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -64,7 +68,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Escape,    view,           {0} },
-	{ MODKEY,             XK_w,      killclient,     {0} },
+	{ MODKEY,                       XK_w,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -105,4 +109,5 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
+
 
