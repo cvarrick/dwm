@@ -190,6 +190,7 @@ static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
 static unsigned long getcolor(const char *colstr);
+static unsigned long getcolor_in_window(const char *colstr, Window w, unsigned long fallback);
 static Bool getrootptr(int *x, int *y);
 static long getstate(Window w);
 static Bool gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -886,7 +887,7 @@ focus(Client *c) {
 		detachstack(c);
 		attachstack(c);
 		grabbuttons(c, True);
-		XSetWindowBorder(dpy, c->win, dc.sel[ColBorder]);
+    XSetWindowBorder(dpy, c->win, getcolor_in_window(selbordercolor, c->win, dc.norm[ColBorder]));
 		setfocus(c);
 	}
 	else
@@ -976,6 +977,21 @@ getrootptr(int *x, int *y) {
 	return XQueryPointer(dpy, root, &dummy, &dummy, x, y, &di, &di, &dui);
 }
 
+unsigned long
+getcolor_in_window(const char *colstr, Window w, unsigned long fallback) {
+	if (!w)
+		return fallback;
+	XWindowAttributes attr;
+	if (!XGetWindowAttributes(dpy, w, &attr))
+		return fallback;
+
+	Colormap cmap = attr.colormap;
+	XColor color;
+
+	if(!XAllocNamedColor(dpy, cmap, colstr, &color, &color))
+		return fallback;
+	return color.pixel;
+}
 long
 getstate(Window w) {
 	int format;
@@ -1175,7 +1191,7 @@ manage(Window w, XWindowAttributes *wa) {
 
 	wc.border_width = c->bw;
 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
-	XSetWindowBorder(dpy, w, dc.norm[ColBorder]);
+  XSetWindowBorder(dpy, w, getcolor_in_window(normbordercolor, w, dc.norm[ColBorder]));
 	configure(c); /* propagates border_width, if size doesn't change */
 	updatewindowtype(c);
 	updatesizehints(c);
@@ -1842,7 +1858,7 @@ unfocus(Client *c, Bool setfocus) {
 	if(!c)
 		return;
 	grabbuttons(c, False);
-	XSetWindowBorder(dpy, c->win, dc.norm[ColBorder]);
+  XSetWindowBorder(dpy, c->win, getcolor_in_window(normbordercolor, c->win, dc.norm[ColBorder]));
 	if(setfocus)
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
 }

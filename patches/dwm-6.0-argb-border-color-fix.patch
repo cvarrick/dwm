@@ -1,0 +1,61 @@
+--- dwm.c	2011-12-19 23:02:46.000000000 +0800
++++ dwm.new.c	2014-11-08 12:44:10.689875202 +0800
+@@ -187,6 +187,7 @@
+ static void focusmon(const Arg *arg);
+ static void focusstack(const Arg *arg);
+ static unsigned long getcolor(const char *colstr);
++static unsigned long getcolor_in_window(const char *colstr, Window w, unsigned long fallback);
+ static Bool getrootptr(int *x, int *y);
+ static long getstate(Window w);
+ static Bool gettextprop(Window w, Atom atom, char *text, unsigned int size);
+@@ -855,7 +856,7 @@
+ 		detachstack(c);
+ 		attachstack(c);
+ 		grabbuttons(c, True);
+-		XSetWindowBorder(dpy, c->win, dc.sel[ColBorder]);
++		XSetWindowBorder(dpy, c->win, getcolor_in_window(selbordercolor, c->win, dc.norm[ColBorder]));
+ 		setfocus(c);
+ 	}
+ 	else
+@@ -936,6 +937,22 @@
+ 	return color.pixel;
+ }
+ 
++unsigned long
++getcolor_in_window(const char *colstr, Window w, unsigned long fallback) {
++	if (!w)
++		return fallback;
++	XWindowAttributes attr;
++	if (!XGetWindowAttributes(dpy, w, &attr))
++		return fallback;
++
++	Colormap cmap = attr.colormap;
++	XColor color;
++
++	if(!XAllocNamedColor(dpy, cmap, colstr, &color, &color))
++		return fallback;
++	return color.pixel;
++}
++
+ Bool
+ getrootptr(int *x, int *y) {
+ 	int di;
+@@ -1144,7 +1161,7 @@
+ 
+ 	wc.border_width = c->bw;
+ 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
+-	XSetWindowBorder(dpy, w, dc.norm[ColBorder]);
++	XSetWindowBorder(dpy, w, getcolor_in_window(normbordercolor, w, dc.norm[ColBorder]));
+ 	configure(c); /* propagates border_width, if size doesn't change */
+ 	updatewindowtype(c);
+ 	updatesizehints(c);
+@@ -1776,7 +1793,7 @@
+ 	if(!c)
+ 		return;
+ 	grabbuttons(c, False);
+-	XSetWindowBorder(dpy, c->win, dc.norm[ColBorder]);
++	XSetWindowBorder(dpy, c->win, getcolor_in_window(normbordercolor, c->win, dc.norm[ColBorder]));
+ 	if(setfocus)
+ 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
+ }
+ 

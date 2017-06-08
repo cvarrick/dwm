@@ -21,6 +21,7 @@ static const Rule rules[] = {
 	 { "Main.py",     NULL,       NULL,       0,            True,        -1 },
 	 { NULL,     NULL,       "Guake!",       0,            True,        -1 },
 	 { NULL,    NULL,       "guake",       0,            True,        -1 },
+	 { "Copyq",     NULL,       NULL,       0,            True,        -1 },
 	 { "copyq",     NULL,       NULL,       0,            True,        -1 },
 	 { "feh",     NULL,       NULL,       0,            True,        -1 },
 	 { "Keepassx",     NULL, "KeePassX - Auto-Type",      0,            True,        -1 },
@@ -118,5 +119,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
-
