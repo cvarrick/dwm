@@ -15,22 +15,29 @@ static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { "#FFFFFF", "#000000",  col_gray2  },
+	[SchemeSel]  = { col_gray3, "#000000",  col_gray2  },
 };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "u" };
 
-static const Rule rules[] = {
-	/* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-};
 
+static const Rule rules[] = {
+	/* class      instance    title       tags mask     isfloating   monitor */
+	 { "XClock",     NULL,       NULL,       0,            True,        -1 },
+	 { "Terminator",     NULL,       "modal",       0,            True,        -1 },
+	 { "Main.py",     NULL,       NULL,       0,            True,        -1 },
+	 { NULL,     NULL,       "Guake!",       0,            True,        -1 },
+	 { NULL,    NULL,       "guake",       0,            True,        -1 },
+	 { "Copyq",     NULL,       NULL,       0,            True,        -1 },
+	 { "copyq",     NULL,       NULL,       0,            True,        -1 },
+	 { "feh",     NULL,       NULL,       0,            True,        -1 },
+	 { "Keepassx",     NULL, "KeePassX - Auto-Type",      0,            True,        -1 },
+	 { "Pavucontrol",     NULL, NULL,      1<<9,            False,        -1 },
+	 { "NULL",     NULL,  "joneill@t420 - newsbeuter",      1<<5,            False,        -1 },
+	 { "NULL",     NULL, "mutt",      1<<4,            False,        -1 },
+
+};
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
