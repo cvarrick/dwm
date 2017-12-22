@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */ /* appearance */
-static const char font[]            = "-*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*";
+static const char font[]            = "-*-ubuntu mono-medium-r-*-*-17-*-*-*-*-*-*-*";
 static const char normbordercolor[] = "#101010";
 static const char normbgcolor[]     = "#151515";
 static const char normfgcolor[]     = "#666666";
@@ -55,11 +55,11 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", "Nimbus-18", "-nb", "#AEB404", "-nf", "#000", "-sb", "#000", "-sf", "#FFF",  NULL };
-static const char *termcmd[]  = { "terminator", NULL };
+static const char *dmenucmd[] = { "rofi", "-show", "run" };
+static const char *termcmd[]  = { "terminator" };
 /* static const char *togglestatuscmd[]  = { "toggle_status.bash", NULL }; */
-static const char *killX[]  = { "killall", "xinit", NULL };
-static const char *guake[]  = { "guake", NULL };
+static const char *killX[]  = { "killall", "xinit" };
+static const char *guake[]  = { "guake" };
 
 static Key keys[] = {
   /* modifier                     key        function        argument */
