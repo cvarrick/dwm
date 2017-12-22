@@ -7,3 +7,6 @@
 *.orig
 *.o
 dwm
+
+nohup.out
+patches/
