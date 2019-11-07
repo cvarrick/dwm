@@ -31,11 +31,16 @@ static const Rule rules[] = {
 	 { NULL,    NULL,       "guake",       0,            True,        -1 },
 	 { "Copyq",     NULL,       NULL,       0,            True,        -1 },
 	 { "copyq",     NULL,       NULL,       0,            True,        -1 },
+	 { "gnome-calculator",     NULL,       NULL,       0,            True,        -1 },
+	 { "Gnome-calculator",     NULL,       NULL,       0,            True,        -1 },
 	 { "feh",     NULL,       NULL,       0,            True,        -1 },
 	 { "Keepassx",     NULL, "KeePassX - Auto-Type",      0,            True,        -1 },
 	 { "Pavucontrol",     NULL, NULL,      1<<9,            False,        -1 },
-	 { "NULL",     NULL,  "joneill@t420 - newsbeuter",      1<<5,            False,        -1 },
-	 { "NULL",     NULL, "mutt",      1<<4,            False,        -1 },
+	 { "Terminator",     NULL,  "news",      1<<3,            False,        -1 },
+	 { "Terminator",     NULL, "mutt",      1<<4,            False,        -1 },
+	 { "Terminator",     NULL, "mutt - gowanut",      1<<4,            False,        -1 },
+	 { "qutebrowser",     NULL, NULL,      1<<0,            False,        -1 },
+	 { "Terminator",     NULL, "joneill@smuglinuxuser",      1<<11,            False,        -1 },
 
 };
 /* layout(s) */
@@ -65,7 +70,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "rofi", "-show", "run" };
+static const char *dmenucmd[] = { "rofi", "-show", "run", " -run-command",  "\"bash -i -c '{cmd}'\"" };
 static const char *termcmd[]  = { "terminator" };
 
 static Key keys[] = {
