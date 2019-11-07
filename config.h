@@ -40,7 +40,6 @@ static const Rule rules[] = {
 	 { "Terminator",     NULL, "mutt",      1<<4,            False,        -1 },
 	 { "Terminator",     NULL, "mutt - gowanut",      1<<4,            False,        -1 },
 	 { "qutebrowser",     NULL, NULL,      1<<0,            False,        -1 },
-	 { "Terminator",     NULL, "joneill@smuglinuxuser",      1<<11,            False,        -1 },
 
 };
 /* layout(s) */
